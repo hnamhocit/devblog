@@ -15,11 +15,13 @@ interface MDEditorProps {
 }
 
 const MDEditor: FC<MDEditorProps> = ({ value, onChange, preview = 'edit' }) => {
+	const handleChange = (value: string | undefined) => onChange(value ?? '')
+
 	return (
 		<div data-color-mode='light'>
 			<MarkdownEditor
 				value={value}
-				onChange={onChange}
+				onChange={handleChange}
 				preview={preview}
 			/>
 		</div>
