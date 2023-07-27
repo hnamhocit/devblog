@@ -1,6 +1,7 @@
 import '@/styles/globals.css'
 import 'react-toastify/dist/ReactToastify.css'
 
+import { DefaultSeo } from 'next-seo'
 import type { AppProps } from 'next/app'
 import { Provider } from 'react-redux'
 import { ToastContainer } from 'react-toastify'
@@ -13,19 +14,39 @@ import store from '@/store'
 
 export default function App({ Component, pageProps }: AppProps) {
 	return (
-		<Provider store={store}>
-			<Auth>
-				<Header />
+		<>
+			<DefaultSeo
+				title='DEV BLOG'
+				description='Are you looking for a platform where you can engage in meaningful discussions, exchange ideas, and lend support to others? Look no further! Our Blog App is the perfect place for you.'
+				openGraph={{
+					url: 'https://devblog-2xmv.onrender.com',
+					type: 'website',
+					title: 'DEV BLOG',
+					description:
+						'Are you looking for a platform where you can engage in meaningful discussions, exchange ideas, and lend support to others? Look no further! Our Blog App is the perfect place for you.',
+					siteName: 'Dev Blog',
+				}}
+				twitter={{
+					handle: '@hnamhocit',
+					site: '@hnamhocit',
+					cardType: 'summary_large_image',
+				}}
+			/>
 
-				<main className='min-h-screen py-4 bg-neutral-100'>
-					<Container>
-						<Component {...pageProps} />
-					</Container>
-				</main>
-			</Auth>
+			<Provider store={store}>
+				<Auth>
+					<Header />
 
-			<LoginNotice />
-			<ToastContainer />
-		</Provider>
+					<main className='min-h-screen py-4 bg-neutral-100'>
+						<Container>
+							<Component {...pageProps} />
+						</Container>
+					</main>
+				</Auth>
+
+				<LoginNotice />
+				<ToastContainer />
+			</Provider>
+		</>
 	)
 }

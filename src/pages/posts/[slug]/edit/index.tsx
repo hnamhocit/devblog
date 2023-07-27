@@ -1,3 +1,4 @@
+import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
@@ -42,6 +43,11 @@ const EditPost = () => {
 		toast.error(message)
 	}
 
+	const seo = {
+		title: 'EDIT POST',
+		description: 'Edit the post to make it more awesome and interesting!',
+	}
+
 	useEffect(() => {
 		fetchPost()
 	}, [fetchPost])
@@ -49,20 +55,37 @@ const EditPost = () => {
 	if (loading) return <Loading />
 
 	return (
-		<Protected>
-			<PostForm
-				slug={slug as string}
-				_content={post?.content}
-				_tagInputs={post?.tags.map((tag) => ({
-					name: tag.name,
-					color: tag.color,
-				}))}
-				defaultValues={{
-					title: post?.title as string,
-					thumbnailURL: post?.thumbnailURL as string,
+		<>
+			<NextSeo
+				{...seo}
+				openGraph={{
+					...seo,
+					images: [
+						{
+							url: post?.thumbnailURL as string,
+							width: 1200,
+							height: 630,
+							alt: post?.title,
+						},
+					],
 				}}
 			/>
-		</Protected>
+
+			<Protected>
+				<PostForm
+					slug={slug as string}
+					_content={post?.content}
+					_tagInputs={post?.tags.map((tag) => ({
+						name: tag.name,
+						color: tag.color,
+					}))}
+					defaultValues={{
+						title: post?.title as string,
+						thumbnailURL: post?.thumbnailURL as string,
+					}}
+				/>
+			</Protected>
+		</>
 	)
 }
 

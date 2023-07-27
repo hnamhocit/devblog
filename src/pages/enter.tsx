@@ -1,4 +1,5 @@
 import { Button, TextField, Typography } from '@mui/material'
+import { NextSeo } from 'next-seo'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -82,85 +83,94 @@ const Enter = () => {
 		}
 	}
 
+	const seo = {
+		title: isSignUp ? 'SIGN UP' : 'LOGIN',
+		description: 'Every article is an opportunity to renew our world ❤️',
+	}
+
 	return (
-		<div className='flex flex-col w-full max-w-lg gap-5 p-12 mx-auto bg-white border rounded-md'>
-			<div className='text-center'>
-				<Typography variant='h4' fontWeight={700}>
-					Welcome to Dev Blog
-				</Typography>
+		<>
+			<NextSeo {...seo} openGraph={seo} />
 
-				<div className='text-sm text-gray-500'>
-					Every article is an opportunity to renew our world 🥰
+			<div className='flex flex-col w-full max-w-lg gap-5 p-12 mx-auto bg-white border rounded-md'>
+				<div className='text-center'>
+					<Typography variant='h4' fontWeight={700}>
+						Welcome to Dev Blog
+					</Typography>
+
+					<div className='text-sm text-gray-500'>
+						Every article is an opportunity to renew our world ❤️
+					</div>
 				</div>
-			</div>
 
-			<form
-				className='flex flex-col gap-5'
-				onSubmit={handleSubmit(onSubmit)}>
-				{isSignUp && (
+				<form
+					className='flex flex-col gap-5'
+					onSubmit={handleSubmit(onSubmit)}>
+					{isSignUp && (
+						<TextField
+							label='Name'
+							error={!!errors.name?.message}
+							helperText={errors.name?.message}
+							{...register('name', {
+								required: validate.required,
+								minLength: validate.min(5),
+								maxLength: validate.max(25),
+							})}
+						/>
+					)}
+
 					<TextField
-						label='Name'
-						error={!!errors.name?.message}
-						helperText={errors.name?.message}
-						{...register('name', {
+						type='email'
+						label='Email'
+						error={!!errors.email?.message}
+						helperText={errors.email?.message}
+						{...register('email', {
 							required: validate.required,
-							minLength: validate.min(5),
-							maxLength: validate.max(25),
+							pattern: validate.email,
 						})}
 					/>
-				)}
 
-				<TextField
-					type='email'
-					label='Email'
-					error={!!errors.email?.message}
-					helperText={errors.email?.message}
-					{...register('email', {
-						required: validate.required,
-						pattern: validate.email,
-					})}
-				/>
+					<TextField
+						type='password'
+						label='Password'
+						error={!!errors.password?.message}
+						helperText={errors.password?.message}
+						{...register('password', {
+							required: validate.required,
+							pattern: validate.password,
+						})}
+					/>
 
-				<TextField
-					type='password'
-					label='Password'
-					error={!!errors.password?.message}
-					helperText={errors.password?.message}
-					{...register('password', {
-						required: validate.required,
-						pattern: validate.password,
-					})}
-				/>
+					<Button
+						disabled={disabled}
+						type='submit'
+						fullWidth
+						variant='contained'>
+						Continue
+					</Button>
+				</form>
 
-				<Button
-					disabled={disabled}
-					type='submit'
-					fullWidth
-					variant='contained'>
-					Continue
-				</Button>
-			</form>
-
-			<div className='text-center'>
-				{isSignUp ? (
-					<div>
-						Already have an account?{' '}
-						<FormLink href='/enter' className='text-blue-500'>
-							Login
-						</FormLink>
-					</div>
-				) : (
-					<div>
-						Don&apos;t have an account?{' '}
-						<FormLink
-							href='/enter?state=new-user'
-							className='text-blue-500'>
-							Sign up
-						</FormLink>
-					</div>
-				)}
+				<div className='text-center'>
+					{isSignUp ? (
+						<div>
+							Already have an account?{' '}
+							<FormLink href='/enter' className='text-blue-500'>
+								Login
+							</FormLink>
+						</div>
+					) : (
+						<div>
+							Don&apos;t have an account?{' '}
+							<FormLink
+								href='/enter?state=new-user'
+								className='text-blue-500'>
+								Sign up
+							</FormLink>
+						</div>
+					)}
+				</div>
 			</div>
-		</div>
+		</>
 	)
 }
 

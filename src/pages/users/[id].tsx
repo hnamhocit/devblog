@@ -1,5 +1,6 @@
 import { Avatar, Button } from '@mui/material'
 import moment from 'moment'
+import { NextSeo } from 'next-seo'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
@@ -63,8 +64,17 @@ const UserProfile = () => {
 		{ title: 'Currently hacking on', content: data?.hackingOn ?? msg },
 	]
 
+	const seo = {
+		title: `${data?.name} PROFILE`,
+		description:
+			data?.bio ??
+			'Every article is an opportunity to renew our world ❤️',
+	}
+
 	return (
 		<>
+			<NextSeo {...seo} openGraph={seo} />
+
 			<div className='relative bg-white border rounded-md mt-[60px] pt-[88px] px-7 pb-9'>
 				<div className='absolute top-0 -translate-x-1/2 -translate-y-1/2 left-1/2'>
 					<Link href={`/users/${data?.id}`}>

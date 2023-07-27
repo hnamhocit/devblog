@@ -1,3 +1,4 @@
+import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
@@ -38,7 +39,17 @@ const TagDetail = () => {
 
 	if (loading) return <Loading />
 
-	return <PostContainer data={tag?.posts} />
+	const seo = {
+		title: name?.toString().toUpperCase(),
+		description: `Explore opensource tag with more than ${tag?.posts.length} articles`,
+	}
+
+	return (
+		<>
+			<NextSeo {...seo} openGraph={seo} />
+			<PostContainer data={tag?.posts} />
+		</>
+	)
 }
 
 export default TagDetail

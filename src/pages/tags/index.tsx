@@ -1,3 +1,4 @@
+import { NextSeo } from 'next-seo'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { BsSearch } from 'react-icons/bs'
 import { useSelector } from 'react-redux'
@@ -48,8 +49,15 @@ const Tags = () => {
 
 	if (loading) return <Loading />
 
+	const seo = {
+		title: 'TAGS',
+		description: `Discover more than ${tags.length} tags with every technology at the DEV BLOG!`,
+	}
+
 	return (
 		<div>
+			<NextSeo {...seo} openGraph={seo} />
+
 			<div className='flex items-center justify-between mb-5'>
 				<div className='text-xl font-bold md:text-3xl'>Top tags</div>
 

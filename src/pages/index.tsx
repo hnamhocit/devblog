@@ -1,3 +1,4 @@
+import { NextSeo } from 'next-seo'
 import { useEffect, useState } from 'react'
 
 import Loading from '@/components/Loading'
@@ -21,5 +22,41 @@ export default function Home() {
 
 	if (loading) return <Loading />
 
-	return <PostContainer data={data} />
+	return (
+		<>
+			<NextSeo
+				openGraph={{
+					images: [
+						{
+							url: 'https://devblog-2xmv.onrender.com/android-chrome-192x192.png',
+							width: 192,
+							height: 192,
+						},
+						{
+							url: 'https://devblog-2xmv.onrender.com/android-chrome-512x512.png',
+							width: 512,
+							height: 512,
+						},
+						{
+							url: 'https://devblog-2xmv.onrender.com/apple-touch-icon.png',
+							width: 180,
+							height: 180,
+						},
+						{
+							url: 'https://devblog-2xmv.onrender.com/favicon-32x32.png',
+							width: 32,
+							height: 32,
+						},
+						{
+							url: 'https://devblog-2xmv.onrender.com/favicon-16x16.png',
+							width: 16,
+							height: 16,
+						},
+					],
+				}}
+			/>
+
+			<PostContainer data={data} />
+		</>
+	)
 }

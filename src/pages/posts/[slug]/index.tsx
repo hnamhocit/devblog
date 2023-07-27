@@ -1,3 +1,4 @@
+import { NextSeo } from 'next-seo'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
@@ -50,6 +51,11 @@ const PostDetail = () => {
 		return []
 	}, [post?.comments])
 
+	const seo = {
+		title: post?.title,
+		description: "Let's discover now!",
+	}
+
 	useEffect(() => {
 		fetchPost()
 	}, [fetchPost])
@@ -57,39 +63,59 @@ const PostDetail = () => {
 	if (loading) return <Loading />
 
 	return (
-		<div className='max-w-3xl mx-auto bg-white rounded-md shadow-xl'>
-			<div
-				className='bg-center bg-no-repeat bg-cover h-60 md:h-[360px] rounded-t-md'
-				style={{
-					backgroundImage: `url(${post?.thumbnailURL})`,
-				}}></div>
+		<>
+			<NextSeo
+				{...seo}
+				openGraph={{
+					...seo,
+					images: [
+						{
+							url: post?.thumbnailURL as string,
+							width: 1200,
+							height: 630,
+							alt: post?.title,
+						},
+					],
+				}}
+			/>
 
-			<div className='p-8 border-b md:px-16'>
-				<div className='flex items-center justify-between'>
-					<Author user={post?.author} updatedAt={post?.updatedAt} />
+			<div className='max-w-3xl mx-auto bg-white rounded-md shadow-xl'>
+				<div
+					className='bg-center bg-no-repeat bg-cover h-60 md:h-[360px] rounded-t-md'
+					style={{
+						backgroundImage: `url(${post?.thumbnailURL})`,
+					}}></div>
 
-					{user?.id === post?.author.id && (
-						<AuthorActions slug={slug as string} />
-					)}
-				</div>
+				<div className='p-8 border-b md:px-16'>
+					<div className='flex items-center justify-between'>
+						<Author
+							user={post?.author}
+							updatedAt={post?.updatedAt}
+						/>
 
-				<div className='mt-5 mb-8'>
-					<div className='text-3xl font-black md:text-5xl'>
-						{post?.title}
+						{user?.id === post?.author.id && (
+							<AuthorActions slug={slug as string} />
+						)}
 					</div>
 
-					<div className='flex flex-wrap items-center gap-1'>
-						{post?.tags.map((tag) => (
-							<Tag key={tag.id} tag={tag} size='normal' />
-						))}
+					<div className='mt-5 mb-8'>
+						<div className='text-3xl font-black md:text-5xl'>
+							{post?.title}
+						</div>
+
+						<div className='flex flex-wrap items-center gap-1'>
+							{post?.tags.map((tag) => (
+								<Tag key={tag.id} tag={tag} size='normal' />
+							))}
+						</div>
 					</div>
+
+					<MDPreview source={post?.content} />
 				</div>
 
-				<MDPreview source={post?.content} />
+				<Footer comments={comments} id={post?.id} />
 			</div>
-
-			<Footer comments={comments} id={post?.id} />
-		</div>
+		</>
 	)
 }
 

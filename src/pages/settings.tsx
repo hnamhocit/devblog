@@ -1,10 +1,13 @@
 import { Button, TextField } from '@mui/material'
+import { NextSeo } from 'next-seo'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
 import Protected from '@/components/Protected'
-import { User } from '@/types'
+import { useAppDispatch } from '@/hooks/useAppDispatch'
+import { useAuth } from '@/hooks/useAuth'
+import { updateUser } from '@/store/reducers/userSlice'
 import { validate } from '@/utils/validate'
 import axiosClient from './api/axiosClient'
 
@@ -23,7 +26,8 @@ type FormData = {
 const boxClassName = 'flex flex-col gap-5 bg-white rounded-md shadow-md p-7'
 
 const Settings = () => {
-	const [user, setUser] = useState<User>()
+	const { user } = useAuth()
+	const dispatch = useAppDispatch()
 	const [disabled, setDisabled] = useState(false)
 
 	const {
@@ -32,23 +36,16 @@ const Settings = () => {
 		formState: { errors },
 		reset,
 	} = useForm<FormData>({
-		defaultValues: async () => {
-			const rs = await axiosClient.get('/users/me')
-			const user = rs.data.data as User
-
-			setUser(user)
-
-			return {
-				email: user.email,
-				name: user.name,
-				photoURL: user.photoURL ?? '',
-				website: user.website ?? '',
-				location: user.location ?? '',
-				bio: user.bio ?? '',
-				hackingOn: user.hackingOn ?? '',
-				learning: user.learning ?? '',
-				skillsAndLanguages: user.skillsAndLanguages ?? '',
-			}
+		defaultValues: {
+			email: user?.email ?? '',
+			name: user?.name ?? '',
+			photoURL: user?.photoURL ?? '',
+			website: user?.website ?? '',
+			location: user?.location ?? '',
+			bio: user?.bio ?? '',
+			hackingOn: user?.hackingOn ?? '',
+			learning: user?.learning ?? '',
+			skillsAndLanguages: user?.skillsAndLanguages ?? '',
 		},
 	})
 
@@ -65,9 +62,9 @@ const Settings = () => {
 				return
 			}
 
-			reset()
 			setDisabled(false)
 			toast.success(message)
+			dispatch(updateUser(data))
 		} catch (error: any) {
 			setDisabled(false)
 			toast.error(error.message)
@@ -183,24 +180,33 @@ const Settings = () => {
 		},
 	]
 
-	return (
-		<Protected>
-			<form
-				onSubmit={handleSubmit(onSubmit)}
-				className='flex flex-col gap-5'>
-				{boxes.map((box, i) => (
-					<div key={i} className={boxClassName}>
-						{box.title && (
-							<div className='text-2xl font-bold'>
-								{box.title}
-							</div>
-						)}
+	const seo = {
+		title: 'SETTINGS',
+		description: 'Edit your profile information!',
+	}
 
-						{box.children}
-					</div>
-				))}
-			</form>
-		</Protected>
+	return (
+		<>
+			<NextSeo {...seo} openGraph={seo} />
+
+			<Protected>
+				<form
+					onSubmit={handleSubmit(onSubmit)}
+					className='flex flex-col gap-5'>
+					{boxes.map((box, i) => (
+						<div key={i} className={boxClassName}>
+							{box.title && (
+								<div className='text-2xl font-bold'>
+									{box.title}
+								</div>
+							)}
+
+							{box.children}
+						</div>
+					))}
+				</form>
+			</Protected>
+		</>
 	)
 }
 
