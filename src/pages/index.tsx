@@ -28,27 +28,27 @@ export default function Home() {
 				openGraph={{
 					images: [
 						{
-							url: 'https://devblog-2xmv.onrender.com/android-chrome-192x192.png',
+							url: 'https://hnamhocit-devblog.vercel.app/android-chrome-192x192.png',
 							width: 192,
 							height: 192,
 						},
 						{
-							url: 'https://devblog-2xmv.onrender.com/android-chrome-512x512.png',
+							url: 'https://hnamhocit-devblog.vercel.app/android-chrome-512x512.png',
 							width: 512,
 							height: 512,
 						},
 						{
-							url: 'https://devblog-2xmv.onrender.com/apple-touch-icon.png',
+							url: 'https://hnamhocit-devblog.vercel.app/apple-touch-icon.png',
 							width: 180,
 							height: 180,
 						},
 						{
-							url: 'https://devblog-2xmv.onrender.com/favicon-32x32.png',
+							url: 'https://hnamhocit-devblog.vercel.app/favicon-32x32.png',
 							width: 32,
 							height: 32,
 						},
 						{
-							url: 'https://devblog-2xmv.onrender.com/favicon-16x16.png',
+							url: 'https://hnamhocit-devblog.vercel.app/favicon-16x16.png',
 							width: 16,
 							height: 16,
 						},

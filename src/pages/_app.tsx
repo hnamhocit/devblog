@@ -19,12 +19,12 @@ export default function App({ Component, pageProps }: AppProps) {
 				title='DEV BLOG'
 				description='Are you looking for a platform where you can engage in meaningful discussions, exchange ideas, and lend support to others? Look no further! Our Blog App is the perfect place for you.'
 				openGraph={{
-					url: 'https://devblog-2xmv.onrender.com',
+					url: 'https://hnamhocit-devblog.vercel.app',
 					type: 'website',
 					title: 'DEV BLOG',
 					description:
 						'Are you looking for a platform where you can engage in meaningful discussions, exchange ideas, and lend support to others? Look no further! Our Blog App is the perfect place for you.',
-					siteName: 'Dev Blog',
+					siteName: 'hnamhocit-devblog.vercel.app',
 				}}
 				twitter={{
 					handle: '@hnamhocit',
