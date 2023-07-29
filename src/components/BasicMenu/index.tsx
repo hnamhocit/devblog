@@ -13,13 +13,14 @@ const BasicMenu: FC<BasicMenuProps> = ({
 	btnSize = 'small',
 }) => {
 	const [open, setOpen] = useState(false)
-	const menuRef = useRef<HTMLInputElement>(null)
+	const ref = useRef<HTMLInputElement>(null)
 
 	useEffect(() => {
 		const handleClickOutside = (e: MouseEvent) => {
 			if (
-				menuRef.current &&
-				!menuRef.current.contains(e.target as Node)
+				open &&
+				ref.current &&
+				!ref.current.contains(e.target as Node)
 			) {
 				setOpen(false)
 			}
@@ -32,16 +33,13 @@ const BasicMenu: FC<BasicMenuProps> = ({
 		}
 	}, [open])
 
-	const toggleOpen = () => setOpen(!open)
-
 	return (
-		<div className='relative'>
-			<IconButton onClick={toggleOpen} size={btnSize}>
+		<div className='relative' ref={ref}>
+			<IconButton onClick={() => setOpen((prev) => !prev)} size={btnSize}>
 				{btnIcon}
 			</IconButton>
 
 			<div
-				ref={menuRef}
 				className='absolute right-0 z-10 p-3 min-w-[240px] transition-all translate-y-2 bg-white border rounded-md shadow-lg top-full'
 				style={{
 					visibility: open ? 'visible' : 'hidden',
